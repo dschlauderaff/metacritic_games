@@ -1,5 +1,2 @@
-require "metacritic_games/version"
-
-module MetacriticGames
-  # Your code goes here...
-end
+require_relative "./metacritic_games/version"
+require_relative './cli'

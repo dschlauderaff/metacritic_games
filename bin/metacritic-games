@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
-puts 'Hello World'
+require "./lib/metacritic_games"
+
+MetacriticGames::CLI.new.call
