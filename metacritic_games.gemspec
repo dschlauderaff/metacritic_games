@@ -6,7 +6,7 @@ require 'metacritic_games/version'
 Gem::Specification.new do |spec|
   spec.name          = "metacritic_games"
   spec.version       = MetacriticGames::VERSION
-  spec.authors       = ["TODO: Write your name"]
+  spec.authors       = ["David Schlauderaff"]
   spec.email         = ["dschlaud@gmail.com"]
 
   spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
