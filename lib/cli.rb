@@ -7,33 +7,31 @@ class MetacriticGames::CLI
     self.cli = HighLine.new
 
     list_platforms
-    binding.pry
-    menu
   end
 
   def list_platforms
 
     self.cli.choose do |menu|
-      menu.index = :letter
+      menu.index = :number
       menu.index_suffix = ")"
       menu.prompt = "Please choose the platform you want new release info for:"
-      menu.choice :PS4 do cli.say("You chose PS4") end
+      menu.choice :PS4 do cli.say("List of new releases on PS4") end
+      menu.choice :"XBOX ONE" do cli.say("List of new releases on XBOX ONE") end
+      menu.choice :SWITCH do cli.say("List of new releases on SWITCH") end
+      menu.choice :PC do cli.say("List of new releases on PC") end
+      menu.choice :"WII U" do cli.say("List of new releases on WII U") end
+      menu.choice :"3DS" do cli.say("List of new releases on 3DS") end
+      menu.choice :"PS VITA" do cli.say("List of new releases on PS VITA") end
+      menu.choice :IOS do cli.say("List of new releases on IOS") end
+      menu.choice :Exit do goodbye end
+
     end
-
-# # here doc
-#     puts <<-DOC
-#       1. PS4
-#       2. XBOX ONE
-#       3. SWITCH
-#       4. PC
-#       5. WII U
-#       6. 3DS
-#       7. PS VITA
-#       8. IOS
-#       DOC
   end
 
-  def menu
-    puts "Enter the number for the platform you want to see new releases:"
+  def goodbye
+    puts "See you next time!"
+    exit
   end
+
+
 end
