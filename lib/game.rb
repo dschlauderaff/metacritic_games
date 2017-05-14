@@ -1,4 +1,4 @@
-class Game
+class MetacriticGames::Game
 
   extend Concerns::Nameable::ClassMethods
   extend Concerns::Findable::ClassMethods
@@ -11,5 +11,5 @@ class Game
     @@all
   end
 
-  
+
 end

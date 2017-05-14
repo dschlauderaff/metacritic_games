@@ -1,4 +1,4 @@
-module Concerns::Nameable
+module MetacriticGames::Concerns::Nameable
   module ClassMethods
     def create(name)
       self.new.tap do |o|

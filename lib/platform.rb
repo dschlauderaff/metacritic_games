@@ -1,9 +1,9 @@
-class Platform
+class MetacriticGames::Platform
 
-  extend Concerns::Nameable::ClassMethods
-  extend Concerns::Findable::ClassMethods
-  extend Concerns::Persistable::ClassMethods
-  include Concerns::Persistable::InstanceMethods
+  extend MetacriticGames::Concerns::Nameable::ClassMethods
+  extend MetacriticGames::Concerns::Findable::ClassMethods
+  extend MetacriticGames::Concerns::Persistable::ClassMethods
+  include MetacriticGames::Concerns::Persistable::InstanceMethods
 
   @@all = []
 
@@ -11,5 +11,5 @@ class Platform
     @@all
   end
 
-  
+
 end

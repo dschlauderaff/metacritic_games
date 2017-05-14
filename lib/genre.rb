@@ -1,4 +1,4 @@
-class Genre
+class MetacriticGames::Genre
 
   extend Concerns::Nameable::ClassMethods
   extend Concerns::Findable::ClassMethods
@@ -11,5 +11,5 @@ class Genre
     @@all
   end
 
-  
+
 end

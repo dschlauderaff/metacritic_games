@@ -1,4 +1,4 @@
-class Developer
+class MetacriticGames::Developer
 
   extend Concerns::Nameable::ClassMethods
   extend Concerns::Findable::ClassMethods
@@ -11,5 +11,5 @@ class Developer
     @@all
   end
 
-  
+
 end
