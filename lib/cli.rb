@@ -11,7 +11,7 @@ class MetacriticGames::CLI
 
   def list_platforms
     @platforms = MetacriticGames::Platform.all
-    binding.pry
+    # binding.pry
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"

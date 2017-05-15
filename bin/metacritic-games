@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require "./lib/metacritic_games"
+require_relative "../lib/metacritic_games"
 
 MetacriticGames::CLI.new.call
