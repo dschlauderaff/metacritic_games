@@ -6,4 +6,4 @@ require_relative './platform'
 # require_relative './concerns/nameable'
 
 require 'highline'
-require 'pry'
+# require 'pry'
