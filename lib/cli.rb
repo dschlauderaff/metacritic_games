@@ -27,6 +27,7 @@ class MetacriticGames::CLI
   end
 
   def list_games(platform)
+    MetacriticGames::Game.create_games_by_platform(platform)
     cli.say "These are Metacritic's newest releases for #{platform.name}:"
 
 
