@@ -13,58 +13,63 @@ class MetacriticGames::Platform
     @@all
   end
 
+
   # def save
   #   self.class.all << self
   # end
 
   def self.create_platforms
-    ps4 = self.new
-    ps4.name = "PS4"
-    ps4.games = ["test 1", "test 2", "test 3"]
-    ps4.developers = []
-    ps4.save
-
-    xbox = self.new
-    xbox.name = "Xbox One"
-    xbox.games = []
-    xbox.developers = []
-    xbox.save
-
-    switch = self.new
-    switch.name = "Switch"
-    switch.games = []
-    switch.developers = []
-    switch.save
-
-    pc = self.new
-    pc.name = "PC"
-    pc.games = []
-    pc.developers = []
-    pc.save
-
-    wii = self.new
-    wii.name = "Wii U"
-    wii.games = []
-    wii.developers = []
-    wii.save
-
-    ds = self.new
-    ds.name = "3DS"
-    ds.games = []
-    ds.developers = []
-    ds.save
-
-    ps_vita = self.new
-    ps_vita.name = "PS Vita"
-    ps_vita.games = []
-    ps_vita.developers = []
-    ps_vita.save
-
-    ios = self.new
-    ios.name = "IOS"
-    ios.games = []
-    ios.developers = []
-    ios.save
+    platform_array = MetacriticGames::Scraper.scrape_new_releases
+    platform_array.each do |platform|
+      self.find_or_create_by_name(platform)
+    end
+    # ps4 = self.new
+    # ps4.name = "PS4"
+    # ps4.games = ["test 1", "test 2", "test 3"]
+    # ps4.developers = []
+    # ps4.save
+    #
+    # xbox = self.new
+    # xbox.name = "Xbox One"
+    # xbox.games = []
+    # xbox.developers = []
+    # xbox.save
+    #
+    # switch = self.new
+    # switch.name = "Switch"
+    # switch.games = []
+    # switch.developers = []
+    # switch.save
+    #
+    # pc = self.new
+    # pc.name = "PC"
+    # pc.games = []
+    # pc.developers = []
+    # pc.save
+    #
+    # wii = self.new
+    # wii.name = "Wii U"
+    # wii.games = []
+    # wii.developers = []
+    # wii.save
+    #
+    # ds = self.new
+    # ds.name = "3DS"
+    # ds.games = []
+    # ds.developers = []
+    # ds.save
+    #
+    # ps_vita = self.new
+    # ps_vita.name = "PS Vita"
+    # ps_vita.games = []
+    # ps_vita.developers = []
+    # ps_vita.save
+    #
+    # ios = self.new
+    # ios.name = "IOS"
+    # ios.games = []
+    # ios.developers = []
+    # ios.save
 
     self.all
   end
