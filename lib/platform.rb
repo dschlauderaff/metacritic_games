@@ -17,8 +17,8 @@ class MetacriticGames::Platform
     self.games = []
   end
 
-  def self.create_platforms
-    platform_array = MetacriticGames::Scraper.scrape_platform
+  def self.create_platforms(platform_array)
+    # platform_array = MetacriticGames::Scraper.scrape_platform
     platform_array.each do |platform|
       self.find_or_create_by_name(platform)
     end

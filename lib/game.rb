@@ -40,8 +40,8 @@ class MetacriticGames::Game
     developer.add_game(self) unless self.developer == nil
   end
 
-  def self.create_games_by_platform(platform)
-    game_array = MetacriticGames::Scraper.scrape_new_releases
+  def self.create_games_by_platform(platform, game_array)
+    # game_array = MetacriticGames::Scraper.scrape_new_releases
     game_array.select! {|game| game.include? platform.name}
     game_array.collect! {|game| game.gsub("(#{platform.name})", "").strip}
     game_array.each do |game|

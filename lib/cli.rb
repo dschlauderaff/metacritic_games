@@ -1,16 +1,17 @@
 # CLI controller
 class MetacriticGames::CLI
 
-  attr_accessor :cli, :platform
+  attr_accessor :cli, :platform, :url
 
   def call
     self.cli = HighLine.new
-
+    self.url = "http://www.metacritic.com/browse/games/release-date/new-releases/all/date"
     list_platforms
   end
 
   def list_platforms
-    MetacriticGames::Platform.create_platforms
+    platform_array = MetacriticGames::Scraper.scrape_platform(self.url)
+    MetacriticGames::Platform.create_platforms(platform_array)
     @platform = MetacriticGames::Platform.all
     # binding.pry
     self.cli.choose do |menu|
@@ -27,13 +28,10 @@ class MetacriticGames::CLI
   end
 
   def list_games(platform)
-    MetacriticGames::Game.create_games_by_platform(platform)
+    game_array = MetacriticGames::Scraper.scrape_new_releases(self.url)
+    # binding.pry
+    MetacriticGames::Game.create_games_by_platform(platform, game_array)
     cli.say "These are Metacritic's newest releases for #{platform.name}:"
-
-
-
-
-
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"
@@ -41,12 +39,6 @@ class MetacriticGames::CLI
       platform.games.each do |game|
         menu.choice :"#{game.name}" do cli.say "Game info" end
       end
-
-      # menu.choice :game_1 do cli.say "Game 1 info" end
-      # menu.choice :game_2 do cli.say "Game 2 info" end
-      # menu.choice :game_3 do cli.say "Game 3 info" end
-      # menu.choice :game_4 do cli.say "Game 4 info" end
-      # menu.choice :game_5 do cli.say "Game 5 info" end
       menu.choice :"Return to platform list" do list_platforms end
       menu.choice :Exit do goodbye end
     end
