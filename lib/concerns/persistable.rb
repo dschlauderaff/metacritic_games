@@ -1,4 +1,4 @@
-module Concerns::Persistable
+module MetacriticGames::Concerns::Persistable
 
   module InstanceMethods
     def save          #Instance Method

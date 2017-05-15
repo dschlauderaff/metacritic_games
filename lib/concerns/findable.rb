@@ -1,4 +1,4 @@
-module Concerns::Findable
+module MetacriticGames::Concerns::Findable
 
   module ClassMethods
     # Search class @@all array for object name

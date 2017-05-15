@@ -1,9 +1,9 @@
 class MetacriticGames::Platform
 
-  # extend MetacriticGames::Concerns::Nameable::ClassMethods
-  # extend MetacriticGames::Concerns::Findable::ClassMethods
-  # extend MetacriticGames::Concerns::Persistable::ClassMethods
-  # include MetacriticGames::Concerns::Persistable::InstanceMethods
+  extend MetacriticGames::Concerns::Nameable::ClassMethods
+  extend MetacriticGames::Concerns::Findable::ClassMethods
+  extend MetacriticGames::Concerns::Persistable::ClassMethods
+  include MetacriticGames::Concerns::Persistable::InstanceMethods
 
   attr_accessor :name, :games, :developers
 
@@ -13,14 +13,14 @@ class MetacriticGames::Platform
     @@all
   end
 
-  def save
-    self.class.all << self
-  end
+  # def save
+  #   self.class.all << self
+  # end
 
   def self.create_platforms
     ps4 = self.new
     ps4.name = "PS4"
-    ps4.games = []
+    ps4.games = ["test 1", "test 2", "test 3"]
     ps4.developers = []
     ps4.save
 
@@ -68,4 +68,14 @@ class MetacriticGames::Platform
 
     self.all
   end
+
+  def add_game(game)
+    game.platform = self if game.platform == nil
+    self.games << game unless self.games.include?(game) == true
+  end
+
+  def genres
+    self.games.collect {|game| game.genre}.uniq
+  end
+
 end
