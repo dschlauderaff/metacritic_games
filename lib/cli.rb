@@ -29,6 +29,7 @@ class MetacriticGames::CLI
 
   def list_games(platform)
     game_array = MetacriticGames::Scraper.scrape_new_releases
+    url_hash = MetacriticGames::Scraper.scrape_new_release_url
     # binding.pry
     MetacriticGames::Game.create_games_by_platform(platform, game_array)
     cli.say "These are Metacritic's newest releases for #{platform.name}:"
@@ -47,7 +48,6 @@ class MetacriticGames::CLI
   end
 
   def game_details(game)
-    MetacriticGames::Scraper.scrape_new_release_url(game)
   end
 
   def goodbye

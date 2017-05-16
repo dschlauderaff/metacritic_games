@@ -24,7 +24,7 @@ class MetacriticGames::Scraper
     end
   end
 
-  def self.scrape_new_release_url(game)
+  def self.scrape_new_release_url
     binding.pry
     self.doc.css(".product_wrap a").attribute("href").value
 

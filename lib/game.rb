@@ -5,7 +5,7 @@ class MetacriticGames::Game
   extend MetacriticGames::Concerns::Persistable::ClassMethods
   include MetacriticGames::Concerns::Persistable::InstanceMethods
 
-  attr_accessor :name, :developer, :genre, :metascore, :user_score, :game_summary, :critic_reviews, :user_reviews, :release_date, :platform
+  attr_accessor :name, :developer, :genre, :metascore, :user_score, :game_summary, :critic_reviews, :user_reviews, :release_date, :platform, :url
 
   @@all = []
 
@@ -46,6 +46,7 @@ class MetacriticGames::Game
           game = self.find_or_create_by_name(game)
           # binding.pry
           game.add_platform(platform)
+          game.add_game_url
         end
       end
     else
@@ -56,8 +57,14 @@ class MetacriticGames::Game
           # binding.pry
           game = self.find_or_create_by_name(game)
           game.add_platform(platform)
+          game.add_game_url
         end
       end
     end
   end
+
+  def add_game_url
+
+  end
+
 end
