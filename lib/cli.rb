@@ -28,20 +28,26 @@ class MetacriticGames::CLI
   end
 
   def list_games(platform)
-    game_array = MetacriticGames::Scraper.scrape_new_releases(self.url)
+    game_array = MetacriticGames::Scraper.scrape_new_releases
     # binding.pry
     MetacriticGames::Game.create_games_by_platform(platform, game_array)
     cli.say "These are Metacritic's newest releases for #{platform.name}:"
+    # binding.pry
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"
       menu.prompt = "Please choose the game you want more information on:"
+    # binding.pry
       platform.games.each do |game|
-        menu.choice :"#{game.name}" do cli.say "Game info" end
+        menu.choice :"#{game.name}" do cli.say "Game Details" end
       end
       menu.choice :"Return to platform list" do list_platforms end
       menu.choice :Exit do goodbye end
     end
+  end
+
+  def game_details(game)
+    MetacriticGames::Scraper.scrape_new_release_url(game)
   end
 
   def goodbye

@@ -26,8 +26,8 @@ class MetacriticGames::Platform
   end
 
   def add_game(game)
-    game.platform = self if game.platform == nil
-    self.games << game unless self.games.include?(game) == true
+    game.platform << self if game.platform == nil
+    self.games << game unless self.games.include?(game)
   end
 
   def genres
