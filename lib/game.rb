@@ -37,7 +37,7 @@ class MetacriticGames::Game
     developer.add_game(self) unless self.developer == nil
   end
 
-  def self.create_games_by_platform(platform, game_array)
+  def self.create_games_by_platform(platform, game_array, url_array)
     if platform.name == "Xbox One"               #metacritic naming for the xboxone does not follow standard pattern
       game_array.select! {|game| game.include? "XONE"}
       game_array.collect! {|game| game.gsub("(XONE)", "").strip}
@@ -46,7 +46,7 @@ class MetacriticGames::Game
           game = self.find_or_create_by_name(game)
           # binding.pry
           game.add_platform(platform)
-          game.add_game_url
+          game.add_game_url(url_array)
         end
       end
     else
@@ -57,13 +57,14 @@ class MetacriticGames::Game
           # binding.pry
           game = self.find_or_create_by_name(game)
           game.add_platform(platform)
-          game.add_game_url
+          game.add_game_url(url_array)
         end
       end
     end
   end
 
-  def add_game_url
+  def add_game_url(url_array)
+    binding.pry
 
   end
 

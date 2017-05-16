@@ -31,8 +31,7 @@ class MetacriticGames::CLI
     game_array = MetacriticGames::Scraper.scrape_new_releases
     # binding.pry
     url_array = MetacriticGames::Scraper.scrape_new_release_url
-    binding.pry
-    MetacriticGames::Game.create_games_by_platform(platform, game_array)
+    MetacriticGames::Game.create_games_by_platform(platform, game_array, url_array)
     cli.say "These are Metacritic's newest releases for #{platform.name}:"
     # binding.pry
     self.cli.choose do |menu|
