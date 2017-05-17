@@ -46,19 +46,17 @@ class MetacriticGames::Game
           game.tap do |new_game|
             game = self.find_or_create_by_name(game)
             game.add_platform(platform)
-            # binding.pry
-            # game.add_game_url(url_array)
+            game.add_game_url(url_array)
           end
         end
       else
-        # binding.pry
         name_array = game_array.select {|game| game.include? platform.name}
         name_array.collect! {|game| game.gsub("(#{platform.name})", "").strip}
         name_array.each do |game|
           game.tap do |new_game|
             game = self.find_or_create_by_name(game)
             game.add_platform(platform)
-            # game.add_game_url(url_array)
+            game.add_game_url(url_array)
           end
         end
       end
