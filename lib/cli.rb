@@ -6,13 +6,16 @@ class MetacriticGames::CLI
   def call
     self.cli = HighLine.new
     self.url = "http://www.metacritic.com/browse/games/release-date/new-releases/all/date"
+    platform_array = MetacriticGames::Scraper.scrape_platform(self.url)
+    game_array = MetacriticGames::Scraper.scrape_new_releases
+    url_array = MetacriticGames::Scraper.scrape_new_release_url
+    MetacriticGames::Platform.create_platforms(platform_array)
+    MetacriticGames::Game.create_games_by_platform(platform, game_array, url_array)
+    @platform = MetacriticGames::Platform.all
     list_platforms
   end
 
   def list_platforms
-    platform_array = MetacriticGames::Scraper.scrape_platform(self.url)
-    MetacriticGames::Platform.create_platforms(platform_array)
-    @platform = MetacriticGames::Platform.all
     # binding.pry
     self.cli.choose do |menu|
       menu.index = :number
@@ -28,10 +31,7 @@ class MetacriticGames::CLI
   end
 
   def list_games(platform)
-    game_array = MetacriticGames::Scraper.scrape_new_releases
     # binding.pry
-    url_array = MetacriticGames::Scraper.scrape_new_release_url
-    MetacriticGames::Game.create_games_by_platform(platform, game_array, url_array)
     cli.say "These are Metacritic's newest releases for #{platform.name}:"
     # binding.pry
     self.cli.choose do |menu|
