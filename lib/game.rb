@@ -42,9 +42,7 @@ class MetacriticGames::Game
   end
 
   def self.create_games(game_array)
-    # binding.pry
     game_array.each do |game|
-      # binding.pry
       if game[:platform] == "XONE"               #metacritic naming for the xboxone does not follow standard pattern
         platform = MetacriticGames::Platform.all.find {|platform| platform.name == "Xbox One"}
 
