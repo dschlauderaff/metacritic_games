@@ -37,27 +37,29 @@ class MetacriticGames::Game
     developer.add_game(self) unless self.developer == nil
   end
 
-  def self.create_games_by_platform(platform, game_array, url_array)
-    if platform.name == "Xbox One"               #metacritic naming for the xboxone does not follow standard pattern
-      game_array.select! {|game| game.include? "XONE"}
-      game_array.collect! {|game| game.gsub("(XONE)", "").strip}
-      game_array.each do |game|
-        game.tap do |new_game|
-          game = self.find_or_create_by_name(game)
-          # binding.pry
-          game.add_platform(platform)
-          game.add_game_url(url_array)
+  def self.create_games_by_platform(game_array, url_array)
+    MetacriticGames::Platform.all.each do |platform|
+      if platform.name == "Xbox One"               #metacritic naming for the xboxone does not follow standard pattern
+        name_array = game_array.select {|game| game.include? "XONE"}
+        name_array.collect! {|game| game.gsub("(XONE)", "").strip}
+        name_array.each do |game|
+          game.tap do |new_game|
+            game = self.find_or_create_by_name(game)
+            game.add_platform(platform)
+            # binding.pry
+            # game.add_game_url(url_array)
+          end
         end
-      end
-    else
-      game_array.select! {|game| game.include? platform.name}
-      game_array.collect! {|game| game.gsub("(#{platform.name})", "").strip}
-      game_array.each do |game|
-        game.tap do |new_game|
-          # binding.pry
-          game = self.find_or_create_by_name(game)
-          game.add_platform(platform)
-          game.add_game_url(url_array)
+      else
+        # binding.pry
+        name_array = game_array.select {|game| game.include? platform.name}
+        name_array.collect! {|game| game.gsub("(#{platform.name})", "").strip}
+        name_array.each do |game|
+          game.tap do |new_game|
+            game = self.find_or_create_by_name(game)
+            game.add_platform(platform)
+            # game.add_game_url(url_array)
+          end
         end
       end
     end

@@ -10,7 +10,8 @@ class MetacriticGames::CLI
     game_array = MetacriticGames::Scraper.scrape_new_releases
     url_array = MetacriticGames::Scraper.scrape_new_release_url
     MetacriticGames::Platform.create_platforms(platform_array)
-    MetacriticGames::Game.create_games_by_platform(platform, game_array, url_array)
+    # binding.pry
+    MetacriticGames::Game.create_games_by_platform(game_array, url_array)
     @platform = MetacriticGames::Platform.all
     list_platforms
   end
