@@ -55,6 +55,7 @@ class MetacriticGames::Game
         name_array.each do |game|
           game.tap do |new_game|
             game = self.find_or_create_by_name(game)
+            # binding.pry
             game.add_platform(platform)
             game.add_game_url(url_array)
           end
