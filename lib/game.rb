@@ -41,15 +41,15 @@ class MetacriticGames::Game
 
   def self.create_games(game_array)
     game_array.each do |game|
-      # binding.pry
+      binding.pry
       if game[:platform] == "XONE"               #metacritic naming for the xboxone does not follow standard pattern
         platform = MetacriticGames::Platform.all.select {|platform| platform.name == "Xbox One"}
 
         game.tap do |new_game|
           new_game = self.find_or_create_by_name(game[:name])
-          binding.pry
+          # binding.pry
           new_game.add_platform(platform.select {|i| i.name == game[:platform]})
-          new_game.url = game[:url]
+          new_game.url[:"#{game[:platform]}"] = game[:url]
 
         end
       else
@@ -59,7 +59,7 @@ class MetacriticGames::Game
           new_game = self.find_or_create_by_name(game[:name])
           binding.pry
           new_game.add_platform(platform.select {|i| i.name == game[:platform]})
-          new_game.url = game[:url]
+          new_game.url[:"#{game[:platform]}"] = game[:url]
         end
       end
     end
