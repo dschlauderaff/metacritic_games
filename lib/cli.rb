@@ -41,14 +41,15 @@ class MetacriticGames::CLI
       menu.prompt = "Please choose the game you want more information on:"
     # binding.pry
       platform.games.each do |game|
-        menu.choice :"#{game.name}" do cli.say "Game Details" end
+        menu.choice :"#{game.name}" do game_details(game, platform) end
       end
       menu.choice :"Return to platform list" do list_platforms end
       menu.choice :Exit do goodbye end
     end
   end
 
-  def game_details(game)
+  def game_details(game, platform)
+    MetacriticGames::Scraper.scrape_game(game.url[:"#{platform.name}"])
   end
 
   def goodbye

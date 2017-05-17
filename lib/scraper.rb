@@ -31,17 +31,6 @@ class MetacriticGames::Scraper
       end
     end
   end
-  # name_array = game_array.select {|game| game.include? "XONE"}
-  # name_array.collect! {|game| game.gsub("(XONE)", "").strip}
-  # /\(([^)]+)\)/
-  # def self.scrape_new_release_url
-  #   # binding.pry
-  #   self.doc.css(".product_wrap .product_title").collect do |url|
-  #     url.css("a").attribute("href").value
-  #   end
-# game.css("a").attribute("href").value
-
-
 
   def self.get_title_text(game)
     # game.tap do |new_game|
@@ -54,10 +43,26 @@ class MetacriticGames::Scraper
   end
 
   def self.get_title_url(game)
-    absolute = "www.metacritic.com/game"
+    absolute = "http://www.metacritic.com"
     absolute + game.css("a").attribute("href").value
   end
 
+  def self.scrape_game(url)
+    doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
+    genre_array = []
+    doc.css("li.summary_detail.product_genre").css("span.data").each do |genre|
+      genre_array << genre.text
+    end
+
+    details_hash = {
+      :metascore => doc.css("div.metascore_w.xlarge").text,
+      :user_score => doc.css(".metascore_anchor .user").text,
+      :genre => genre_array  
+    }
+    binding.pry
+
+
+  end
 
 # Nokogiri::HTML(open(self.url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
 end
