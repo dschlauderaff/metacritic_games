@@ -19,10 +19,12 @@ class MetacriticGames::Game
 
   def initialize
     self.platform = []
+    self.url = {}
     # self.genre = []
   end
 
   def add_platform(platform)
+    binding.pry
     platform.add_game(self) unless platform.games.include?(self)
     self.platform << platform unless self.platform.include?(platform)
   end
@@ -37,36 +39,29 @@ class MetacriticGames::Game
     developer.add_game(self) unless self.developer == nil
   end
 
-  def self.create_games_by_platform(game_array, url_array)
-    MetacriticGames::Platform.all.each do |platform|
-      if platform.name == "Xbox One"               #metacritic naming for the xboxone does not follow standard pattern
-        name_array = game_array.select {|game| game.include? "XONE"}
-        name_array.collect! {|game| game.gsub("(XONE)", "").strip}
-        name_array.each do |game|
-          game.tap do |new_game|
-            game = self.find_or_create_by_name(game)
-            game.add_platform(platform)
-            game.add_game_url(url_array)
-          end
+  def self.create_games(game_array)
+    game_array.each do |game|
+      # binding.pry
+      if game[:platform] == "XONE"               #metacritic naming for the xboxone does not follow standard pattern
+        platform = MetacriticGames::Platform.all.select {|platform| platform.name == "Xbox One"}
+
+        game.tap do |new_game|
+          new_game = self.find_or_create_by_name(game[:name])
+          binding.pry
+          new_game.add_platform(platform.select {|i| i.name == game[:platform]})
+          new_game.url = game[:url]
+
         end
       else
-        name_array = game_array.select {|game| game.include? platform.name}
-        name_array.collect! {|game| game.gsub("(#{platform.name})", "").strip}
-        name_array.each do |game|
-          game.tap do |new_game|
-            game = self.find_or_create_by_name(game)
-            # binding.pry
-            game.add_platform(platform)
-            game.add_game_url(url_array)
-          end
+        platform = MetacriticGames::Platform.all.select {|platform| platform.name == game[:platform]}
+
+        game.tap do |new_game|
+          new_game = self.find_or_create_by_name(game[:name])
+          binding.pry
+          new_game.add_platform(platform.select {|i| i.name == game[:platform]})
+          new_game.url = game[:url]
         end
       end
     end
   end
-
-  def add_game_url(url_array)
-    binding.pry
-
-  end
-
 end

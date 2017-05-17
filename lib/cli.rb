@@ -8,10 +8,10 @@ class MetacriticGames::CLI
     self.url = "http://www.metacritic.com/browse/games/release-date/new-releases/all/date"
     platform_array = MetacriticGames::Scraper.scrape_platform(self.url)
     game_array = MetacriticGames::Scraper.scrape_new_releases
-    url_array = MetacriticGames::Scraper.scrape_new_release_url
-    MetacriticGames::Platform.create_platforms(platform_array)
+    game_array.reject! {|game| game == nil}
     # binding.pry
-    MetacriticGames::Game.create_games_by_platform(game_array, url_array)
+    MetacriticGames::Platform.create_platforms(platform_array)
+    MetacriticGames::Game.create_games(game_array)
     @platform = MetacriticGames::Platform.all
     list_platforms
   end

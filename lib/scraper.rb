@@ -19,13 +19,16 @@ class MetacriticGames::Scraper
   def self.scrape_new_releases
     # url = "http://www.metacritic.com/browse/games/release-date/new-releases/all/date"
     # doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
+    # binding.pry
     self.doc.css(".product_wrap .product_title").collect do |game|
-      game_hash = {
-        :name => self.get_title_text(game),
-        :platform => self.get_title_platform(game),
-        :url => self.get_title_url(game)
-      }
-      binding.pry
+      # binding.pry
+      if game.text.include? ?(
+        game_hash = {
+          :name => self.get_title_text(game),
+          :platform => self.get_title_platform(game),
+          :url => self.get_title_url(game)
+        }
+      end
     end
   end
   # name_array = game_array.select {|game| game.include? "XONE"}

@@ -22,6 +22,7 @@ class MetacriticGames::Platform
     platform_array.each do |platform|
       self.find_or_create_by_name(platform)
     end
+    # binding.pry
     self.all
   end
 
