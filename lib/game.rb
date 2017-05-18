@@ -51,6 +51,11 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
+          MetacriticGames::Scraper.scrape_game(new_game.url[:XONE]).each do |key, value|
+            binding.pry
+
+          end
+
         end
       elsif game[:platform] == "WIIU"               #metacritic naming for the wii u does not follow standard pattern
         platform = MetacriticGames::Platform.all.find {|platform| platform.name == "Wii U"}
@@ -81,5 +86,9 @@ class MetacriticGames::Game
         end
       end
     end
+  end
+
+  def self.assign_details(game_array)
+
   end
 end

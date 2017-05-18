@@ -50,18 +50,21 @@ class MetacriticGames::Scraper
   def self.scrape_game(url)
     doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
     genre_array = []
-    doc.css("li.summary_detail.product_genre").css("span.data").each do |genre|
-      genre_array << genre.text
-    end
+
 
     details_hash = {
       :metascore => doc.css("div.metascore_w.xlarge").text,
       :user_score => doc.css(".metascore_anchor .user").text,
-      :genre => genre_array  
+      :genre => genre_array
     }
-    binding.pry
+  end
 
-
+  def self.scrap_genre(url)
+    doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
+    genre_array = []
+    doc.css("li.summary_detail.product_genre").css("span.data").each do |genre|
+      genre_array << genre.text
+    end
   end
 
 # Nokogiri::HTML(open(self.url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))

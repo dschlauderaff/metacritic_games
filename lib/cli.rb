@@ -13,6 +13,11 @@ class MetacriticGames::CLI
     MetacriticGames::Platform.create_platforms(platform_array)
     MetacriticGames::Game.create_games(game_array)
     @platform = MetacriticGames::Platform.all
+    # binding.pry
+    # MetacriticGames::Game.all.each do |game|
+    #
+    # MetacriticGames::Scraper.scrape_game(game.url[:"#{platform.name}"])
+    # MetacriticGames::Game.assign_details(game_array)
     list_platforms
   end
 
@@ -49,7 +54,6 @@ class MetacriticGames::CLI
   end
 
   def game_details(game, platform)
-    MetacriticGames::Scraper.scrape_game(game.url[:"#{platform.name}"])
   end
 
   def goodbye
