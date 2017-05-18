@@ -1,23 +1,25 @@
 # CLI controller
 class MetacriticGames::CLI
 
-  attr_accessor :cli, :platform, :url
+
+
+  attr_accessor :cli, :platform, :url, :genre
+
+  def self.progressbar
+    @@progressbar
+  end
 
   def call
     self.cli = HighLine.new
     self.url = "http://www.metacritic.com/browse/games/release-date/new-releases/all/date"
+    @@progressbar = ProgressBar.create(:starting_at => 20, :total => nil)
     platform_array = MetacriticGames::Scraper.scrape_platform(self.url)
     game_array = MetacriticGames::Scraper.scrape_new_releases
     game_array.reject! {|game| game == nil}
-    # binding.pry
     MetacriticGames::Platform.create_platforms(platform_array)
     MetacriticGames::Game.create_games(game_array)
     @platform = MetacriticGames::Platform.all
-    # binding.pry
-    # MetacriticGames::Game.all.each do |game|
-    #
-    # MetacriticGames::Scraper.scrape_game(game.url[:"#{platform.name}"])
-    # MetacriticGames::Game.assign_details(game_array)
+    @genre = MetacriticGames::Genre.all
     list_platforms
   end
 
@@ -26,11 +28,12 @@ class MetacriticGames::CLI
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"
-      menu.prompt = "Please choose the platform you want new release info for:"
+      menu.prompt = "\nPlease choose the platform you want new release info for:"
       self.platform.each do |platform|
         menu.choice :"#{platform.name}" do list_games(platform) end
       end
-      menu.choice :List do list_platforms end
+      menu.choice :"List Platforms" do list_platforms end
+      menu.choice :"List Genres" do list_genres end
       menu.choice :Exit do goodbye end
 
     end
@@ -97,13 +100,13 @@ class MetacriticGames::CLI
 
   def game_url(game, platform)
     if platform.name == "Xbox One"
-      game.url[:XONE]
+      puts "#{game.url[:XONE]}".colorize(:blue)
     elsif platform.name == "Wii U"
-      game.url[:WIIU]
+      puts "#{game.url[:WIIU]}".colorize(:blue)
     elsif platform.name == "PS Vita"
-      game.url[:VITA]
+      puts "#{game.url[:VITA]}".colorize(:blue)
     else
-      game.url[platform.name.to_sym]
+      puts "#{game.url[platform.name.to_sym]}".colorize(:blue)
     end
   end
 end

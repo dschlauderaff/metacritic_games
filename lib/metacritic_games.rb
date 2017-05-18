@@ -5,6 +5,7 @@ require 'openssl'
 require 'highline'
 require 'pry'
 require 'colorize'
+require 'ruby-progressbar'
 require_relative './cli'
 
 module MetacriticGames::Concerns

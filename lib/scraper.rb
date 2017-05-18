@@ -12,6 +12,7 @@ class MetacriticGames::Scraper
     # url = "http://www.metacritic.com/browse/games/release-date/new-releases/all/date"
     self.doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
     self.doc.css(".platform_item").collect do |platform|
+      MetacriticGames::CLI.progressbar.increment
       platform.text
     end
   end
@@ -21,7 +22,7 @@ class MetacriticGames::Scraper
     # doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
     # binding.pry
     self.doc.css(".product_wrap .product_title").collect do |game|
-      # binding.pry
+      MetacriticGames::CLI.progressbar.increment
       if game.text.include? ?(
         game_hash = {
           :name => self.get_title_text(game),
@@ -51,6 +52,7 @@ class MetacriticGames::Scraper
     doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
     genre_array = []
     doc.css("li.summary_detail.product_genre").css("span.data").each do |genre|
+      MetacriticGames::CLI.progressbar.increment
       genre_array << genre.text
     end
     details_hash = {
@@ -65,8 +67,8 @@ class MetacriticGames::Scraper
   end
 
 end
-  def self.scrape_genre(url)
-    doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
-
-# Nokogiri::HTML(open(self.url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
-end
+#   def self.scrape_genre(url)
+#     doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
+#
+# # Nokogiri::HTML(open(self.url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
+# end
