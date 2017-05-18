@@ -1,8 +1,7 @@
 # MetacriticGames
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/metacritic_games`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem scrapes the new release page of metacritic games and returns the newest releases listed by console. Each
+game can be selected to find out metacritic score, user score, game genre, and a link to the metacritic review page.
 
 ## Installation
 
@@ -22,7 +21,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Run 'bin/metacritic-games', then allow the cli to scrape and create the data for use. Once the platform menu loads, you can choose a platform to
+see new games, and then select a game for more information, or return to the platform menu.
 
 ## Development
 
@@ -38,4 +38,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/dschla
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
