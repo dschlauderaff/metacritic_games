@@ -24,30 +24,26 @@ class MetacriticGames::CLI
   end
 
   def list_platforms
-    # binding.pry
+    puts "\nPlatforms".bold.underline
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"
-      menu.prompt = "\nPlease choose the platform you want new release info for:"
+      menu.prompt = "Please choose the platform you want new release info for:"
       self.platform.each do |platform|
         menu.choice :"#{platform.name}" do list_games(platform) end
       end
       menu.choice :"List Platforms" do list_platforms end
-      menu.choice :"List Genres" do list_genres end
       menu.choice :Exit do goodbye end
 
     end
   end
 
   def list_games(platform)
-    # binding.pry
     cli.say "Metacritic's newest releases for #{platform.name}:"
-    # binding.pry
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"
       menu.prompt = "Please choose the game you want more information on:"
-    # binding.pry
       platform.games.each do |game|
         menu.choice :"#{game.name}" do game_details(game, platform) end
       end
@@ -60,16 +56,9 @@ class MetacriticGames::CLI
     cli.say "#{game.name} has a metacritic score of #{game.metascore[platform.name.to_sym]} and a current user score of: #{game.user_score[platform.name.to_sym]}."
     cli.say "It is classified to the following genres:"
     game.genre.each {|genre| cli.say "#{genre.name}"}
-    # binding.pry
     sleep 1
     starship_troopers
     game_url(game, platform)
-
-    # sleep 2
-
-
-
-    # binding.pry
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"
@@ -79,7 +68,6 @@ class MetacriticGames::CLI
       menu.choice :Exit do goodbye end
     end
   end
-
 
   def goodbye
     puts "See you next time!"
@@ -91,9 +79,9 @@ class MetacriticGames::CLI
 
     5.times do
       print "\r#{msg}"
-      sleep 0.5
+      sleep 0.3
       print "\r#{ ' ' * msg.size}"
-      sleep 0.5
+      sleep 0.3
     end
     puts "\nClick the link for more details".bold
   end
