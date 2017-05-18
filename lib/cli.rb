@@ -9,19 +9,30 @@ class MetacriticGames::CLI
     @@progressbar
   end
 
+# call gets everything running. sets the url for scraping main page, initializes highline for menus and progressbar for loading animation, creates platforms and games, then calls the first menu list
   def call
     self.cli = HighLine.new
     self.url = "http://www.metacritic.com/browse/games/release-date/new-releases/all/date"
     @@progressbar = ProgressBar.create(:starting_at => 20, :total => nil)
-    platform_array = MetacriticGames::Scraper.scrape_platform(self.url)
-    game_array = MetacriticGames::Scraper.scrape_new_releases
-    game_array.reject! {|game| game == nil}
-    MetacriticGames::Platform.create_platforms(platform_array)
-    MetacriticGames::Game.create_games(game_array)
+    MetacriticGames::Platform.create_platforms(build_platform_array)
+    MetacriticGames::Game.create_games(build_game_array)
     @platform = MetacriticGames::Platform.all
     @genre = MetacriticGames::Genre.all
     list_platforms
   end
+
+# scrapes and returns the platforms listed on the new release page
+  def build_platform_array
+    MetacriticGames::Scraper.scrape_platform(self.url)
+  end
+
+# scrapes the games listed on the new release page
+  def build_game_array
+    game_array = MetacriticGames::Scraper.scrape_new_releases
+    game_array.reject! {|game| game == nil}
+    game_array
+  end
+
 
   def list_platforms
     puts "\nPlatforms".bold.underline
@@ -38,6 +49,7 @@ class MetacriticGames::CLI
     end
   end
 
+#lists games based on the platform passed in and creates the menu option for further game details
   def list_games(platform)
     cli.say "Metacritic's newest releases for #{platform.name}:"
     self.cli.choose do |menu|
@@ -52,6 +64,7 @@ class MetacriticGames::CLI
     end
   end
 
+#gives greater detail on a particular game and a link to access more
   def game_details(game, platform)
     cli.say "#{game.name} has a metacritic score of #{game.metascore[platform.name.to_sym]} and a current user score of: #{game.user_score[platform.name.to_sym]}."
     cli.say "It is classified to the following genres:"
@@ -86,6 +99,7 @@ class MetacriticGames::CLI
     puts "\nClick the link for more details".bold
   end
 
+# since games can have multiple platforms, logic to select the correct link for the specific platform
   def game_url(game, platform)
     if platform.name == "Xbox One"
       puts "#{game.url[:XONE]}".colorize(:blue)

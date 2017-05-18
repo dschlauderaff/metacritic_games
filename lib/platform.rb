@@ -18,12 +18,10 @@ class MetacriticGames::Platform
   end
 
   def self.create_platforms(platform_array)
-    # platform_array = MetacriticGames::Scraper.scrape_platform
     platform_array.each do |platform|
       MetacriticGames::CLI.progressbar.increment
       self.find_or_create_by_name(platform)
     end
-    # binding.pry
     self.all
   end
 
@@ -35,5 +33,4 @@ class MetacriticGames::Platform
   def genres
     self.games.collect {|game| game.genre}.uniq
   end
-
 end

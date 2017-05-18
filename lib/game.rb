@@ -22,28 +22,16 @@ class MetacriticGames::Game
   end
 
   def add_platform(platform)
-    # binding.pry
     platform.add_game(self) unless platform.games.include?(self)
     self.platform << platform unless self.platform.include?(platform)
   end
 
   def add_genre(genre)
-    # binding.pry
     genre.add_game(self) unless genre.games.include?(self)
     self.genre << genre unless self.genre.include?(genre)
   end
 
-
-  # def genre= (name)
-  #   @genre = name
-  #   genre.add_game(self) unless self.genre == nil
-  # end
-
-  def developer= (name)
-    self.developer = name
-    developer.add_game(self) unless self.developer == nil
-  end
-
+# creates the game object based on the array passed in from the controller. once the game is created, it scrapes it calls the scraper to scrape it's platform-specific page, then assigns the values and creates genre objects based off scrape data
   def self.create_games(game_array)
     game_array.each do |game|
       MetacriticGames::CLI.progressbar.increment
@@ -52,18 +40,18 @@ class MetacriticGames::Game
 
         game.tap do |new_game|
           new_game = self.find_or_create_by_name(game[:name])
-          # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
-          # binding.pry
           MetacriticGames::Scraper.scrape_game(new_game.url[:XONE]).each do |key,value|
-            # binding.pry
             if value.is_a? Array
               value.each do |genre|
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
             elsif value.fetch(:platform) == "tbd"
+              value[:platform] = "currently unavailable"
+              new_game.send(("#{key}="), value)
+            elsif value.fetch(:platform) == ""
               value[:platform] = "currently unavailable"
               new_game.send(("#{key}="), value)
             else
@@ -77,7 +65,6 @@ class MetacriticGames::Game
 
         game.tap do |new_game|
           new_game = self.find_or_create_by_name(game[:name])
-          # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:WIIU]).each do |key,value|
@@ -87,6 +74,9 @@ class MetacriticGames::Game
                 new_game.add_genre(new_genre)
               end
             elsif value.fetch(:platform) == "tbd"
+              value[:platform] = "currently unavailable"
+              new_game.send(("#{key}="), value)
+            elsif value.fetch(:platform) == ""
               value[:platform] = "currently unavailable"
               new_game.send(("#{key}="), value)
             else
@@ -100,7 +90,6 @@ class MetacriticGames::Game
 
         game.tap do |new_game|
           new_game = self.find_or_create_by_name(game[:name])
-          # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:VITA]).each do |key,value|
@@ -110,6 +99,9 @@ class MetacriticGames::Game
                 new_game.add_genre(new_genre)
               end
             elsif value.fetch(:platform) == "tbd"
+              value[:platform] = "currently unavailable"
+              new_game.send(("#{key}="), value)
+            elsif value.fetch(:platform) == ""
               value[:platform] = "currently unavailable"
               new_game.send(("#{key}="), value)
             else
@@ -123,7 +115,6 @@ class MetacriticGames::Game
 
         game.tap do |new_game|
           new_game = self.find_or_create_by_name(game[:name])
-          # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
@@ -135,14 +126,12 @@ class MetacriticGames::Game
             elsif value.fetch(:platform) == "tbd"
               value[:platform] = "currently unavailable"
               new_game.send(("#{key}="), value)
-              # binding.pry
             elsif value.fetch(:platform) == ""
               value[:platform] = "currently unavailable"
               new_game.send(("#{key}="), value)
             else
               new_game.send(("#{key}="), value)
             end
-            # binding.pry
           end
           score_by_platform(new_game, platform)
         end
@@ -150,6 +139,7 @@ class MetacriticGames::Game
     end
   end
 
+# changes the key of the metacritic and user scores from the generic ":platform" to a unique platform.name key required for multiplatform releases
   def self.score_by_platform(game, platform)
     game.metascore[platform.name.to_sym] = game.metascore.delete(:platform)
     game.user_score[platform.name.to_sym] = game.user_score.delete(:platform)
