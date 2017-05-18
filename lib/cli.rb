@@ -38,7 +38,7 @@ class MetacriticGames::CLI
 
   def list_games(platform)
     # binding.pry
-    cli.say "These are Metacritic's newest releases for #{platform.name}:"
+    cli.say "Metacritic's newest releases for #{platform.name}:"
     # binding.pry
     self.cli.choose do |menu|
       menu.index = :number
@@ -55,25 +55,22 @@ class MetacriticGames::CLI
 
   def game_details(game, platform)
     cli.say "#{game.name} has a metacritic score of #{game.metascore[platform.name.to_sym]} and a current user score of: #{game.user_score[platform.name.to_sym]}."
-    # if game game.user_score.has_value?("")
-    #   cli.say "The user score for this game is currently unavaialble"
-    # else
-    #   cli.say "The user score for this game is #{game.user_score[platform.name.to_sym]}"
-    # end
     cli.say "It is classified to the following genres:"
     game.genre.each {|genre| cli.say "#{genre.name}"}
-
-
+    # binding.pry
+    sleep 1
     starship_troopers
-    cli.say "#{game.url[platform.name.to_sym]}"
+    game_url(game, platform)
+
+    # sleep 2
 
 
 
-    binding.pry
+    # binding.pry
     self.cli.choose do |menu|
       menu.index = :number
       menu.index_suffix = ")"
-      menu.prompt = "Which menu would you like to return to:"
+      menu.prompt = "Which menu would you like to return to?"
       menu.choice :"Return to games list" do list_games(platform) end
       menu.choice :"Return to platform list" do list_platforms end
       menu.choice :Exit do goodbye end
@@ -95,7 +92,18 @@ class MetacriticGames::CLI
       print "\r#{ ' ' * msg.size}"
       sleep 0.5
     end
+    puts "\nClick the link for more details".bold
   end
 
-
+  def game_url(game, platform)
+    if platform.name == "Xbox One"
+      game.url[:XONE]
+    elsif platform.name == "Wii U"
+      game.url[:WIIU]
+    elsif platform.name == "PS Vita"
+      game.url[:VITA]
+    else
+      game.url[platform.name.to_sym]
+    end
+  end
 end
