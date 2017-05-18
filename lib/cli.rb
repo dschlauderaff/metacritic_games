@@ -54,13 +54,47 @@ class MetacriticGames::CLI
   end
 
   def game_details(game, platform)
-    cli.say ""
+    cli.say "#{game.name} has a metacritic score of #{game.metascore[platform.name.to_sym]} and a current user score of: #{game.user_score[platform.name.to_sym]}."
+    # if game game.user_score.has_value?("")
+    #   cli.say "The user score for this game is currently unavaialble"
+    # else
+    #   cli.say "The user score for this game is #{game.user_score[platform.name.to_sym]}"
+    # end
+    cli.say "It is classified to the following genres:"
+    game.genre.each {|genre| cli.say "#{genre.name}"}
+
+
+    starship_troopers
+    cli.say "#{game.url[platform.name.to_sym]}"
+
+
+
     binding.pry
+    self.cli.choose do |menu|
+      menu.index = :number
+      menu.index_suffix = ")"
+      menu.prompt = "Which menu would you like to return to:"
+      menu.choice :"Return to games list" do list_games(platform) end
+      menu.choice :"Return to platform list" do list_platforms end
+      menu.choice :Exit do goodbye end
+    end
   end
+
 
   def goodbye
     puts "See you next time!"
     exit
+  end
+
+  def starship_troopers
+    msg = "Would you like to know more?".bold
+
+    5.times do
+      print "\r#{msg}"
+      sleep 0.5
+      print "\r#{ ' ' * msg.size}"
+      sleep 0.5
+    end
   end
 
 

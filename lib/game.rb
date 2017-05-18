@@ -54,13 +54,15 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
-          binding.pry
+          # binding.pry
           MetacriticGames::Scraper.scrape_game(new_game.url[:XONE]).each do |key,value|
             if value.is_a? Array
               value.each do |genre|
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
+            elsif value == ""
+              new_game.send(("#{key}="), "Score unavailable")
             else
               new_game.send(("#{key}="), value)
             end
@@ -81,6 +83,8 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
+            elsif value == ""
+              new_game.send(("#{key}="), "Score unavailable")
             else
               new_game.send(("#{key}="), value)
             end
@@ -101,6 +105,8 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
+            elsif value == ""
+              new_game.send(("#{key}="), "Score unavailable")
             else
               new_game.send(("#{key}="), value)
             end
@@ -121,6 +127,8 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
+            elsif value == ""
+              new_game.send(("#{key}="), "Score unavailable")
             else
               new_game.send(("#{key}="), value)
             end

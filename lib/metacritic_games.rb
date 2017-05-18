@@ -4,6 +4,7 @@ require 'open-uri'
 require 'openssl'
 require 'highline'
 require 'pry'
+require 'colorize'
 require_relative './cli'
 
 module MetacriticGames::Concerns
