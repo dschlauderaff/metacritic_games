@@ -54,9 +54,16 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
-          MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
-            new_game.send(("#{key}="), value)
-            # new_game.("#{key}")[platform.name.to_sym] = value
+          binding.pry
+          MetacriticGames::Scraper.scrape_game(new_game.url[:XONE]).each do |key,value|
+            if value.is_a? Array
+              value.each do |genre|
+                new_genre = MetacriticGames::Genre.create_genre(genre)
+                new_game.add_genre(new_genre)
+              end
+            else
+              new_game.send(("#{key}="), value)
+            end
           end
           score_by_platform(new_game, platform)
         end
@@ -68,9 +75,15 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
-          MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
-            new_game.send(("#{key}="), value)
-            # new_game.("#{key}")[platform.name.to_sym] = value
+          MetacriticGames::Scraper.scrape_game(new_game.url[:WIIU]).each do |key,value|
+            if value.is_a? Array
+              value.each do |genre|
+                new_genre = MetacriticGames::Genre.create_genre(genre)
+                new_game.add_genre(new_genre)
+              end
+            else
+              new_game.send(("#{key}="), value)
+            end
           end
           score_by_platform(new_game, platform)
         end
@@ -82,9 +95,15 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
-          MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
-            new_game.send(("#{key}="), value)
-            # new_game.("#{key}")[platform.name.to_sym] = value
+          MetacriticGames::Scraper.scrape_game(new_game.url[:VITA]).each do |key,value|
+            if value.is_a? Array
+              value.each do |genre|
+                new_genre = MetacriticGames::Genre.create_genre(genre)
+                new_game.add_genre(new_genre)
+              end
+            else
+              new_game.send(("#{key}="), value)
+            end
           end
           score_by_platform(new_game, platform)
         end
