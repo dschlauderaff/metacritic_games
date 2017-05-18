@@ -51,11 +51,11 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
-          MetacriticGames::Scraper.scrape_game(new_game.url[:XONE]).each do |key, value|
-            binding.pry
-
+          MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
+            new_game.send(("#{key}="), value)
+            # new_game.("#{key}")[platform.name.to_sym] = value
           end
-
+          score_by_platform(new_game, platform)
         end
       elsif game[:platform] == "WIIU"               #metacritic naming for the wii u does not follow standard pattern
         platform = MetacriticGames::Platform.all.find {|platform| platform.name == "Wii U"}
@@ -65,6 +65,11 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
+          MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
+            new_game.send(("#{key}="), value)
+            # new_game.("#{key}")[platform.name.to_sym] = value
+          end
+          score_by_platform(new_game, platform)
         end
       elsif game[:platform] == "VITA"               #metacritic naming for the ps vita does not follow standard pattern
         platform = MetacriticGames::Platform.all.find {|platform| platform.name == "PS Vita"}
@@ -74,6 +79,11 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
+          MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
+            new_game.send(("#{key}="), value)
+            # new_game.("#{key}")[platform.name.to_sym] = value
+          end
+          score_by_platform(new_game, platform)
         end
       else
         platform = MetacriticGames::Platform.all.find {|platform| platform.name == game[:platform]}
@@ -83,9 +93,20 @@ class MetacriticGames::Game
           # binding.pry
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
+          MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
+            new_game.send(("#{key}="), value)
+            # new_game.("#{key}")[platform.name.to_sym] = value
+          end
+          score_by_platform(new_game, platform)
+          # binding.pry
         end
       end
     end
+  end
+
+  def self.score_by_platform(game, platform)
+    game.metascore[platform.name.to_sym] = game.metascore.delete(:platform)
+    game.user_score[platform.name.to_sym] = game.user_score.delete(:platform)
   end
 
   def self.assign_details(game_array)

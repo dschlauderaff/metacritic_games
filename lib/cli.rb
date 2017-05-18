@@ -54,6 +54,8 @@ class MetacriticGames::CLI
   end
 
   def game_details(game, platform)
+    cli.say ""
+    binding.pry
   end
 
   def goodbye
