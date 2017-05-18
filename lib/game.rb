@@ -13,10 +13,6 @@ class MetacriticGames::Game
     @@all
   end
 
-  # def save
-  #   self.class.all << self
-  # end
-
   def initialize
     self.platform = []
     self.url = {}
@@ -30,6 +26,13 @@ class MetacriticGames::Game
     platform.add_game(self) unless platform.games.include?(self)
     self.platform << platform unless self.platform.include?(platform)
   end
+
+  def add_genre(genre)
+    # binding.pry
+    genre.add_game(self) unless genre.games.include?(self)
+    self.genre << genre unless self.genre.include?(genre)
+  end
+
 
   # def genre= (name)
   #   @genre = name
@@ -94,11 +97,18 @@ class MetacriticGames::Game
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
-            new_game.send(("#{key}="), value)
-            # new_game.("#{key}")[platform.name.to_sym] = value
+            if value.is_a? Array
+              value.each do |genre|
+                new_genre = MetacriticGames::Genre.create_genre(genre)
+                new_game.add_genre(new_genre)
+              end
+            else
+              new_game.send(("#{key}="), value)
+            end
           end
           score_by_platform(new_game, platform)
           # binding.pry
+
         end
       end
     end

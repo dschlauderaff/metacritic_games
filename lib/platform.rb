@@ -5,7 +5,7 @@ class MetacriticGames::Platform
   extend MetacriticGames::Concerns::Persistable::ClassMethods
   include MetacriticGames::Concerns::Persistable::InstanceMethods
 
-  attr_accessor :name, :games, :developers
+  attr_accessor :name, :games
 
   @@all = []
 
@@ -27,7 +27,7 @@ class MetacriticGames::Platform
   end
 
   def add_game(game)
-    game.platform << self if game.platform == nil
+    game.platform << self unless game.platform.include? self
     self.games << game unless self.games.include?(game)
   end
 
