@@ -48,18 +48,12 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
-            # elsif value.fetch(:platform) == "tbd"
-            #   value[:platform] = "currently unavailable"
-            #   new_game.send(("#{key}="), value)
-            # elsif value.fetch(:platform) == ""
-            #   value[:platform] = "currently unavailable"
-            #   new_game.send(("#{key}="), value)
             else
-              binding.pry
-              score_assignment(key,value)
+              score_assignment(new_game, key, value)
             end
           end
           score_by_platform(new_game, platform)
+          binding.pry
         end
       elsif game[:platform] == "WIIU"               #metacritic naming for the wii u does not follow standard pattern
         platform = MetacriticGames::Platform.all.find {|platform| platform.name == "Wii U"}
@@ -74,14 +68,8 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
-            elsif value.fetch(:platform) == "tbd"
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
-            elsif value.fetch(:platform) == ""
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
             else
-              new_game.send(("#{key}="), value)
+              score_assignment(new_game, key, value)
             end
           end
           score_by_platform(new_game, platform)
@@ -99,14 +87,8 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
-            elsif value.fetch(:platform) == "tbd"
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
-            elsif value.fetch(:platform) == ""
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
             else
-              new_game.send(("#{key}="), value)
+              score_assignment(new_game, key, value)
             end
           end
           score_by_platform(new_game, platform)
@@ -124,14 +106,8 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
-            elsif value.fetch(:platform) == "tbd"
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
-            elsif value.fetch(:platform) == ""
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
             else
-              new_game.send(("#{key}="), value)
+              score_assignment(new_game, key, value)
             end
           end
           score_by_platform(new_game, platform)
@@ -142,11 +118,12 @@ class MetacriticGames::Game
 
 # changes the key of the metacritic and user scores from the generic ":platform" to a unique platform.name key required for multiplatform releases
   def self.score_by_platform(game, platform)
+    binding.pry
     game.metascore[platform.name.to_sym] = game.metascore.delete(:platform)
     game.user_score[platform.name.to_sym] = game.user_score.delete(:platform)
   end
 
-  def self.score_assignment(key, value)
+  def self.score_assignment(new_game, key, value)
     if key == :metascore
       new_game.metascore[key] = value[:platform]
     else
