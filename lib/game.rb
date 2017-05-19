@@ -48,14 +48,15 @@ class MetacriticGames::Game
                 new_genre = MetacriticGames::Genre.create_genre(genre)
                 new_game.add_genre(new_genre)
               end
-            elsif value.fetch(:platform) == "tbd"
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
-            elsif value.fetch(:platform) == ""
-              value[:platform] = "currently unavailable"
-              new_game.send(("#{key}="), value)
+            # elsif value.fetch(:platform) == "tbd"
+            #   value[:platform] = "currently unavailable"
+            #   new_game.send(("#{key}="), value)
+            # elsif value.fetch(:platform) == ""
+            #   value[:platform] = "currently unavailable"
+            #   new_game.send(("#{key}="), value)
             else
-              new_game.send(("#{key}="), value)
+              binding.pry
+              score_assignment(key,value)
             end
           end
           score_by_platform(new_game, platform)
@@ -143,5 +144,13 @@ class MetacriticGames::Game
   def self.score_by_platform(game, platform)
     game.metascore[platform.name.to_sym] = game.metascore.delete(:platform)
     game.user_score[platform.name.to_sym] = game.user_score.delete(:platform)
+  end
+
+  def self.score_assignment(key, value)
+    if key == :metascore
+      new_game.metascore[key] = value[:platform]
+    else
+      new_game.user_score[key] = value[:platform]
+    end
   end
 end
