@@ -53,7 +53,6 @@ class MetacriticGames::Game
             end
           end
           score_by_platform(new_game, platform)
-          binding.pry
         end
       elsif game[:platform] == "WIIU"               #metacritic naming for the wii u does not follow standard pattern
         platform = MetacriticGames::Platform.all.find {|platform| platform.name == "Wii U"}
@@ -118,14 +117,19 @@ class MetacriticGames::Game
 
 # changes the key of the metacritic and user scores from the generic ":platform" to a unique platform.name key required for multiplatform releases
   def self.score_by_platform(game, platform)
-    binding.pry
-    game.metascore[platform.name.to_sym] = game.metascore.delete(:platform)
-    game.user_score[platform.name.to_sym] = game.user_score.delete(:platform)
+    game.metascore[platform.name.to_sym] = game.metascore.delete(:metascore)
+    game.user_score[platform.name.to_sym] = game.user_score.delete(:user_score)
   end
 
   def self.score_assignment(new_game, key, value)
     if key == :metascore
       new_game.metascore[key] = value[:platform]
+    elsif value[:platform] == "tbd"
+      value[:platform] = "not yet available"
+      new_game.user_score[key] = value[:platform]
+    elsif value[:platform] == ""
+      value[:platform] = "not yet available"
+      new_game.user_score[key] = value[:platform]
     else
       new_game.user_score[key] = value[:platform]
     end
