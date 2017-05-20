@@ -12,12 +12,13 @@ class MetacriticGames::Genre
   def initialize
     self.games = []
   end
-  
+
   def self.all
     @@all
   end
 
   def self.create_genre(genre)
+    MetacriticGames::CLI.progressbar.increment
     self.find_or_create_by_name(genre)
   end
 

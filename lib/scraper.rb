@@ -50,10 +50,9 @@ class MetacriticGames::Scraper
   # scrape individual page and return scores and genre listings
   def self.scrape_game(url)
     doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  'User-Agent' => 'safari'))
-    genre_array = []
-    doc.css("li.summary_detail.product_genre").css("span.data").each do |genre|
+    genre_array = doc.css("li.summary_detail.product_genre").css("span.data").collect do |genre|
       MetacriticGames::CLI.progressbar.increment
-      genre_array << genre.text
+      genre.text
     end
     details_hash = {
       :metascore => {

@@ -28,9 +28,7 @@ class MetacriticGames::CLI
 
 # scrapes the games listed on the new release page
   def build_game_array
-    game_array = MetacriticGames::Scraper.scrape_new_releases
-    game_array.reject! {|game| game == nil}
-    game_array
+    MetacriticGames::Scraper.scrape_new_releases.reject {|game| game == nil}
   end
 
 
@@ -92,14 +90,14 @@ class MetacriticGames::CLI
 
     5.times do
       print "\r#{msg}"
-      sleep 0.3
+      sleep 0.5
       print "\r#{ ' ' * msg.size}"
-      sleep 0.3
+      sleep 0.5
     end
     puts "\nClick the link for more details".bold
   end
 
-# since games can have multiple platforms, logic to select the correct link for the specific platform
+# since games can have multiple platforms, logic to select the correct link for the specifi
   def game_url(game, platform)
     if platform.name == "Xbox One"
       puts "#{game.url[:XONE]}".colorize(:blue)

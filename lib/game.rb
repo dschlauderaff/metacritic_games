@@ -43,6 +43,7 @@ class MetacriticGames::Game
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:XONE]).each do |key,value|
+            MetacriticGames::CLI.progressbar.increment
             if value.is_a? Array
               value.each do |genre|
                 new_genre = MetacriticGames::Genre.create_genre(genre)
@@ -62,6 +63,7 @@ class MetacriticGames::Game
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:WIIU]).each do |key,value|
+            MetacriticGames::CLI.progressbar.increment
             if value.is_a? Array
               value.each do |genre|
                 new_genre = MetacriticGames::Genre.create_genre(genre)
@@ -81,6 +83,7 @@ class MetacriticGames::Game
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:VITA]).each do |key,value|
+            MetacriticGames::CLI.progressbar.increment
             if value.is_a? Array
               value.each do |genre|
                 new_genre = MetacriticGames::Genre.create_genre(genre)
@@ -100,6 +103,7 @@ class MetacriticGames::Game
           new_game.add_platform(platform)
           new_game.url[:"#{game[:platform]}"] = game[:url]
           MetacriticGames::Scraper.scrape_game(new_game.url[:"#{platform.name}"]).each do |key,value|
+            MetacriticGames::CLI.progressbar.increment
             if value.is_a? Array
               value.each do |genre|
                 new_genre = MetacriticGames::Genre.create_genre(genre)
@@ -121,6 +125,7 @@ class MetacriticGames::Game
     game.user_score[platform.name.to_sym] = game.user_score.delete(:user_score)
   end
 
+#using #send was overwriting the hash instead of adding a new key:value pair for multiplatform games, this method is the alternative
   def self.score_assignment(new_game, key, value)
     if key == :metascore
       new_game.metascore[key] = value[:platform]
