@@ -16,7 +16,6 @@ class MetacriticGames::CLI
     @@progressbar = ProgressBar.create(:starting_at => 20, :total => nil)
     MetacriticGames::Platform.create_platforms(build_platform_array)
     MetacriticGames::Game.create_games(build_game_array)
-    binding.pry
     @platform = MetacriticGames::Platform.all
     @genre = MetacriticGames::Genre.all
     list_platforms
@@ -42,9 +41,22 @@ class MetacriticGames::CLI
       self.platform.each do |platform|
         menu.choice :"#{platform.name}" do list_games(platform) end
       end
-      menu.choice :"List Platforms" do list_platforms end
+      menu.choice :"Other options" do options_menu end
       menu.choice :Exit do goodbye end
+    end
+  end
 
+  def options_menu
+    puts "\nOptions".bold.underline
+    answer = cli.ask("Please enter a number 0-100 to see all games with an average metascore greater than your input:   ", Integer) {|q| q.in = 0..100}
+    MetacriticGames::Game.metascore_average_greater_than(answer).each {|game| puts "#{game.name}"}
+    self.cli.choose do |menu|
+      menu.index = :number
+      menu.index_suffix = ")"
+      menu.prompt = "What would you like to do?"
+      menu.choice :"Average metascore" do options_menu end
+      menu.choice :"Return to platform list" do list_platforms end
+      menu.choice :Exit do goodbye end
     end
   end
 

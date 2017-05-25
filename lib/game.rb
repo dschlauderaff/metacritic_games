@@ -145,10 +145,6 @@ class MetacriticGames::Game
   end
 
   def self.metascore_average_greater_than(score)
-    self.all.collect do |game|
-      if game.average_metascore > score
-        game
-      end
-    end
+    self.all.select {|game| game.average_metascore > score}
   end
 end
