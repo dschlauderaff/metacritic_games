@@ -16,6 +16,7 @@ class MetacriticGames::CLI
     @@progressbar = ProgressBar.create(:starting_at => 20, :total => nil)
     MetacriticGames::Platform.create_platforms(build_platform_array)
     MetacriticGames::Game.create_games(build_game_array)
+    binding.pry
     @platform = MetacriticGames::Platform.all
     @genre = MetacriticGames::Genre.all
     list_platforms

@@ -139,4 +139,16 @@ class MetacriticGames::Game
       new_game.user_score[key] = value[:platform]
     end
   end
+
+  def average_metascore
+    self.metascore.values.reduce(:+) / self.metascore.size
+  end
+
+  def self.metascore_average_greater_than(score)
+    self.all.collect do |game|
+      if game.average_metascore > score
+
+      end
+    end
+  end
 end

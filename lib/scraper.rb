@@ -56,10 +56,10 @@ class MetacriticGames::Scraper
     end
     details_hash = {
       :metascore => {
-        :platform => doc.css("div.metascore_w.xlarge").text
+        :platform => doc.css("div.metascore_w.xlarge").text.to_i
       },
       :user_score => {
-        :platform => doc.css(".metascore_anchor .user").text
+        :platform => doc.css(".metascore_anchor .user").text.to_i
       },
       :genre => genre_array
     }
